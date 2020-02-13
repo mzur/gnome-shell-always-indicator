@@ -1,0 +1,10 @@
+{
+  "description": "Always show the new messages indicator in the panel.",
+  "gettext-domain": "always-indicator",
+  "name": "Always Indicator",
+  "shell-version": [
+    "3.28"
+  ],
+  "url": "https://github.com/mzur/gnome-shell-always-indicator",
+  "uuid": "always-indicator@martin.zurowietz.de"
+}
