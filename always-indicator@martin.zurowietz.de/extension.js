@@ -4,6 +4,7 @@ const Main = imports.ui.main;
 class Extension {
    constructor() {
       this.indicator = Main.panel.statusArea.dateMenu._indicator;
+      this.indicator.actor.style = 'color:#5294e2;';
       this.originalVisible = this.indicator.actor.visible;
       this.observers = [
          {
