@@ -1,5 +1,5 @@
 {
-  "description": "Always show the new messages indicator in the panel.",
+  "description": "Always show the new messages indicator on new messages.",
   "gettext-domain": "always-indicator",
   "name": "Always Indicator",
   "shell-version": [
