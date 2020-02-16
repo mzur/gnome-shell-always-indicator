@@ -2,6 +2,8 @@
 
 GNOME shell extension to always show the new messages indicator on new messages.
 
+<img src="indcator.png" alt="Preview">
+
 ## Installation
 
 [<img src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true" height="100">](https://extensions.gnome.org/extension/2594/always-indicator/)
