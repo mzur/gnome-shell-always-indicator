@@ -2,7 +2,7 @@
 
 GNOME shell extension to always show the new messages indicator on new messages.
 
-<img src="indcator.png" alt="Preview">
+<img src="indicator.png" alt="Preview">
 
 ## Installation
 
