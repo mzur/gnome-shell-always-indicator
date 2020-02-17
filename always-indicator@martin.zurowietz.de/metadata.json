@@ -6,5 +6,6 @@
     "3.28"
   ],
   "url": "https://github.com/mzur/gnome-shell-always-indicator",
-  "uuid": "always-indicator@martin.zurowietz.de"
+  "uuid": "always-indicator@martin.zurowietz.de",
+  "settings-schema": "org.gnome.shell.extensions.always-indicator-settings"
 }
