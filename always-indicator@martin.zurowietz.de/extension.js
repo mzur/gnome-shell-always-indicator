@@ -9,6 +9,7 @@ class Extension {
 
       this.originalCount = this.indicator._count;
       this.originalStyle = this.indicator.style;
+      this.customStyle = '';
       this.observers = [
          {
             observable: Main.messageTray,
@@ -25,6 +26,10 @@ class Extension {
          {
             observable: this.settings,
             id: this.settings.connect('changed::color', this._handleColorChanged.bind(this)),
+         },
+         {
+            observable: this.indicator._settings,
+            id: this.indicator._settings.connect('changed::show-banners', this._updateCount.bind(this)),
          },
       ];
 
@@ -56,10 +61,15 @@ class Extension {
       this.indicator._sources.forEach(source => (count += source.count));
       this.indicator._count = count;
       this.indicator._sync();
+      if (count === 0 && !this.indicator._settings.get_boolean('show-banners')) {
+         this.indicator.style = this.originalStyle;
+      } else {
+         this.indicator.style = this.customStyle;
+      }
    }
 
    _handleColorChanged() {
-      this.indicator.style = 'color:' + this.settings.get_string('color') + ';';
+      this.customStyle = 'color:' + this.settings.get_string('color') + ';';
    }
 }
 
