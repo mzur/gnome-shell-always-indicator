@@ -1,5 +1,5 @@
 {
-  "description": "Always show the new messages indicator on new messages.",
+  "description": "Always show the new messages indicator on new messages. Features: 1) New message indicator is always shown if there are notifications. 2) The color of the indicator can be customized. 3) If 'do not disturb' is active, the icon is displayed in the custom color if there are notifications.",
   "gettext-domain": "always-indicator",
   "name": "Always Indicator",
   "shell-version": [
