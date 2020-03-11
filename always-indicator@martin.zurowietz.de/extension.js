@@ -7,8 +7,9 @@ class Extension {
       this.settings = new Settings(Self.metadata['settings-schema']);
       this.indicator = Main.panel.statusArea.dateMenu._indicator;
 
-      this.originalVisible = this.indicator.actor.visible;
-      this.originalStyle = this.indicator.actor.style;
+      this.originalCount = this.indicator._count;
+      this.originalStyle = this.indicator.style;
+      this.customStyle = '';
       this.observers = [
          {
             observable: Main.messageTray,
@@ -26,15 +27,21 @@ class Extension {
             observable: this.settings,
             id: this.settings.connect('changed::color', this._handleColorChanged.bind(this)),
          },
+         {
+            observable: this.indicator._settings,
+            id: this.indicator._settings.connect('changed::show-banners', this._updateCount.bind(this)),
+         },
       ];
 
       this._handleColorChanged();
+      this._updateCount();
    }
 
 
    destroy() {
-      this.indicator.actor.visible = this.originalVisible;
-      this.indicator.actor.style = this.originalStyle;
+      this.indicator._count = this.originalCount;
+      this.indicator._sync();
+      this.indicator.style = this.originalStyle;
       this.observers.forEach(observer => {
          observer.observable.disconnect(observer.id);
       });
@@ -43,19 +50,26 @@ class Extension {
    _onSourceAdded(tray, source) {
       this.observers.push({
          observable: source,
-         id: source.connect('count-updated', this._updateCount.bind(this)),
+         id: source.connect('notify::count', this._updateCount.bind(this)),
       });
       this._updateCount();
    }
 
    _updateCount() {
-      this.originalVisible = this.indicator.actor.visible;
-      let visible = this.indicator._sources.some(source => { return source.count > 0; });
-      this.indicator.actor.visible = visible;
+      this.originalCount = this.indicator._count;
+      let count = 0;
+      this.indicator._sources.forEach(source => (count += source.count));
+      this.indicator._count = count;
+      this.indicator._sync();
+      if (count === 0 && !this.indicator._settings.get_boolean('show-banners')) {
+         this.indicator.style = this.originalStyle;
+      } else {
+         this.indicator.style = this.customStyle;
+      }
    }
 
    _handleColorChanged() {
-      this.indicator.actor.style = 'color:' + this.settings.get_string('color') + ';';
+      this.customStyle = 'color:' + this.settings.get_string('color') + ';';
    }
 }
 
