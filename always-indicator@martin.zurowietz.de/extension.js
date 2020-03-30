@@ -24,6 +24,10 @@ class Extension {
             id: Main.messageTray.connect('queue-changed', this._updateCount.bind(this)),
          },
          {
+            observable: Main.messageTray,
+            id: Main.messageTray.connect('destroy', this._unobserve.bind(this, Main.messageTray)),
+         },
+         {
             observable: this.settings,
             id: this.settings.connect('changed::color', this._handleColorChanged.bind(this)),
          },
@@ -37,7 +41,6 @@ class Extension {
       this._updateCount();
    }
 
-
    destroy() {
       this.indicator._count = this.originalCount;
       this.indicator._sync();
@@ -47,11 +50,23 @@ class Extension {
       });
    }
 
-   _onSourceAdded(tray, source) {
-      this.observers.push({
-         observable: source,
-         id: source.connect('notify::count', this._updateCount.bind(this)),
+   _unobserve(observable) {
+      this.observers = this.observers.filter(function (observer) {
+         return observer.observable !== observable;
       });
+   }
+
+   _onSourceAdded(tray, source) {
+      this.observers.push(
+         {
+            observable: source,
+            id: source.connect('notify::count', this._updateCount.bind(this)),
+         },
+         {
+            observable: source,
+            id: source.connect('destroy', this._unobserve.bind(this, source)),
+         }
+      );
       this._updateCount();
    }
 
