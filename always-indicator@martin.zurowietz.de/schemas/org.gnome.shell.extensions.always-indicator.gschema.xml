@@ -1,7 +1,7 @@
 <schemalist gettext-domain="gnome-shell-extensions">
   <schema id="org.gnome.shell.extensions.always-indicator-settings" path="/org/gnome/shell/extensions/always-indicator/">
     <key name="color" type="s">
-      <default>'#5294e2'</default>
+      <default>'rgb(82,148,226)'</default>
       <summary>Indicator color</summary>
       <description>The color used for the message indicator</description>
     </key>

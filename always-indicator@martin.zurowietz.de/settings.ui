@@ -1,51 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
-<interface>
-  <requires lib="gtk+" version="3.20"/>
-  <object class="GtkBox" id="prefs_widget">
-    <property name="width_request">500</property>
+<interface domain="always-indicator">
+  <template class="PrefsWidget" parent="GtkBox">
+    <property name="width-request">200</property>
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_left">20</property>
-    <property name="margin_right">20</property>
-    <property name="margin_top">20</property>
-    <property name="margin_bottom">20</property>
+    <property name="can-focus">True</property>
+    <property name="margin-start">20</property>
+    <property name="margin-end">20</property>
+    <property name="margin-top">20</property>
+    <property name="margin-bottom">20</property>
     <property name="hexpand">True</property>
     <property name="orientation">vertical</property>
     <property name="spacing">15</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">True</property>
         <property name="spacing">50</property>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">center</property>
             <property name="label" translatable="yes">Color of the message indicator</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkColorButton" id="color">
+          <object class="GtkColorButton" id="colorButton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="valign">center</property>
+            <signal name="color-set" handler="_onColorSet" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>
