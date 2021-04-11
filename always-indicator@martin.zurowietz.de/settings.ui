@@ -20,7 +20,8 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="valign">center</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
             <property name="label" translatable="yes">Color of the message indicator</property>
           </object>
         </child>

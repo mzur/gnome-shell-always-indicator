@@ -9,7 +9,7 @@ const Gdk = imports.gi.Gdk;
 const PrefsWidget = GObject.registerClass({
     GTypeName: 'PrefsWidget',
     Template: Self.dir.get_child('settings.ui').get_uri(),
-    InternalChildren: ['colorButton']
+    InternalChildren: ['colorButton'],
 }, class PrefsWidget extends Gtk.Box {
    _init(settings, params = {}) {
       super._init(params);
