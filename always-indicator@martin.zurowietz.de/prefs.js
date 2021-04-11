@@ -1,19 +1,16 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Self = ExtensionUtils.getCurrentExtension();
-const Settings = Self.imports.Settings.Settings;
 const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
 
 const PrefsWidget = GObject.registerClass({
     GTypeName: 'PrefsWidget',
     Template: Self.dir.get_child('settings.ui').get_uri(),
     InternalChildren: ['colorButton'],
 }, class PrefsWidget extends Gtk.Box {
-   _init(settings, params = {}) {
+   _init(params = {}) {
       super._init(params);
-      this._settings = settings;
+      this._settings = ExtensionUtils.getSettings(Self.metadata['settings-schema']);
 
       let color = this._colorButton.get_rgba();
       color.parse(this._settings.get_string('color'));
@@ -30,7 +27,5 @@ function init() {
 }
 
 function buildPrefsWidget() {
-   let settings = new Settings(Self.metadata['settings-schema']);
-
-   return new PrefsWidget(settings);
+   return new PrefsWidget();
 }

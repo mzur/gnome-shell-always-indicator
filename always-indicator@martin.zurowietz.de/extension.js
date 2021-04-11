@@ -1,10 +1,10 @@
-const Self = imports.misc.extensionUtils.getCurrentExtension();
+const ExtensionUtils = imports.misc.extensionUtils;
+const Self = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
-const Settings = Self.imports.Settings.Settings;
 
 class Extension {
    constructor() {
-      this.settings = new Settings(Self.metadata['settings-schema']);
+      this.settings = ExtensionUtils.getSettings(Self.metadata['settings-schema']);
       this.indicator = Main.panel.statusArea.dateMenu._indicator;
 
       this.originalCount = this.indicator._count;
