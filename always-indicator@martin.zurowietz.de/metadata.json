@@ -4,7 +4,8 @@
   "name": "Always Indicator",
   "shell-version": [
     "40",
-    "41"
+    "41",
+    "42"
   ],
   "url": "https://github.com/mzur/gnome-shell-always-indicator",
   "uuid": "always-indicator@martin.zurowietz.de",
