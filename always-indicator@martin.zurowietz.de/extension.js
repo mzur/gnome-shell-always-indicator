@@ -1,100 +1,66 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Self = ExtensionUtils.getCurrentExtension();
-const Main = imports.ui.main;
+import {Extension as BaseExtension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {panel} from 'resource:///org/gnome/shell/ui/main.js';
 
-class Extension {
-   constructor() {
-      this.settings = ExtensionUtils.getSettings(Self.metadata['settings-schema']);
-      this.indicator = Main.panel.statusArea.dateMenu._indicator;
+export default class Extension extends BaseExtension {
+   enable() {
+      this._settings = this.getSettings();
+      this._customStyle = '';
+      this._indicator = panel.statusArea.dateMenu._indicator;
+      this._originalStyle = this._indicator.style;
 
-      this.originalCount = this.indicator._count;
-      this.originalStyle = this.indicator.style;
-      this.customStyle = '';
-      this.observers = [
+      this._originalUpdateCount = this._indicator._updateCount;
+      this._indicator._updateCount = this._updateCountOverride.bind(this);
+
+      this._originalSync = this._indicator._sync;
+      this._indicator._sync = this._syncOverride.bind(this);
+
+      this._observers = [
          {
-            observable: Main.messageTray,
-            id: Main.messageTray.connect('source-added', this._onSourceAdded.bind(this)),
+            item: this._indicator._settings,
+            id: this._indicator._settings.connect('changed::show-banners', this._indicator._sync),
          },
          {
-            observable: Main.messageTray,
-            id: Main.messageTray.connect('source-removed', this._updateCount.bind(this)),
-         },
-         {
-            observable: Main.messageTray,
-            id: Main.messageTray.connect('queue-changed', this._updateCount.bind(this)),
-         },
-         {
-            observable: Main.messageTray,
-            id: Main.messageTray.connect('destroy', this._unobserve.bind(this, Main.messageTray)),
-         },
-         {
-            observable: this.settings,
-            id: this.settings.connect('changed::color', this._handleColorChanged.bind(this)),
-         },
-         {
-            observable: this.indicator._settings,
-            id: this.indicator._settings.connect('changed::show-banners', this._updateCount.bind(this)),
+            item: this._settings,
+            id: this._settings.connect('changed::color', this._handleColorChanged.bind(this)),
          },
       ];
 
       this._handleColorChanged();
-      this._updateCount();
+      this._indicator._updateCount();
    }
 
-   destroy() {
-      this.indicator._count = this.originalCount;
-      this.indicator._sync();
-      this.indicator.style = this.originalStyle;
-      this.observers.forEach(observer => {
-         observer.observable.disconnect(observer.id);
-      });
+   disable() {
+      this._indicator._updateCount = this._originalUpdateCount;
+      this._indicator._sync = this._originalSync;
+      this._indicator.style = this._originalStyle;
+      this._indicator._updateCount();
+
+      this._observers.forEach(o => o.item.disconnect(o.id));
+      this._observers = null;
+      this._settings = null
+      this._customStyle = null;
+      this._originalStyle = null;
+      this._observerId = null;
    }
 
-   _unobserve(observable) {
-      this.observers = this.observers.filter(function (observer) {
-         return observer.observable !== observable;
-      });
-   }
-
-   _onSourceAdded(tray, source) {
-      this.observers.push(
-         {
-            observable: source,
-            id: source.connect('notify::count', this._updateCount.bind(this)),
-         },
-         {
-            observable: source,
-            id: source.connect('destroy', this._unobserve.bind(this, source)),
-         }
-      );
-      this._updateCount();
-   }
-
-   _updateCount() {
-      this.originalCount = this.indicator._count;
+   _updateCountOverride() {
       let count = 0;
-      this.indicator._sources.forEach(source => (count += source.count));
-      this.indicator._count = count;
-      this.indicator._sync();
-      if (count === 0 && !this.indicator._settings.get_boolean('show-banners')) {
-         this.indicator.style = this.originalStyle;
+      this._indicator._sources.forEach(source => (count += source.count));
+      this._indicator._count = count;
+      this._indicator._sync();
+   }
+
+   _syncOverride() {
+      this._originalSync.call(this._indicator);
+      if (this._indicator._count === 0 && !this._indicator._settings.get_boolean('show-banners')) {
+         this._indicator.style = this._originalStyle;
       } else {
-         this.indicator.style = this.customStyle;
+         this._indicator.style = this._customStyle;
       }
    }
 
    _handleColorChanged() {
-      this.customStyle = 'color:' + this.settings.get_string('color') + ';';
+      const color = this._settings.get_string('color');
+      this._customStyle = `color: ${color};`;
    }
-}
-
-let extension;
-
-function enable() {
-   extension = new Extension();
-}
-
-function disable() {
-   extension.destroy();
-   extension = null;
 }
