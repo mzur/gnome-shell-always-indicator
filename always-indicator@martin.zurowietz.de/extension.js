@@ -62,5 +62,6 @@ export default class Extension extends BaseExtension {
    _handleColorChanged() {
       const color = this._settings.get_string('color');
       this._customStyle = `color: ${color};`;
+      this._indicator._sync();
    }
 }
