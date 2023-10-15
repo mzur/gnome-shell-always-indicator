@@ -1,7 +1,7 @@
 import {Extension as BaseExtension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {panel} from 'resource:///org/gnome/shell/ui/main.js';
 
-export default class Extension extends BaseExtension {
+export default class AlwaysIndicatorExtension extends BaseExtension {
    enable() {
       this._settings = this.getSettings();
       this._customStyle = '';
