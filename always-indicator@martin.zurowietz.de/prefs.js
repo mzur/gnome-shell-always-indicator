@@ -4,7 +4,8 @@ import Gtk from 'gi://Gtk';
 
 export default class Prefs extends ExtensionPreferences {
    fillPreferencesWindow(window) {
-      this._settings = this.getSettings();
+      let settings = this.getSettings();
+      window._settings = settings;
       const page = new Adw.PreferencesPage();
       const group = new Adw.PreferencesGroup();
       page.add(group);
@@ -19,11 +20,11 @@ export default class Prefs extends ExtensionPreferences {
       group.add(row);
 
       let color = button.get_rgba();
-      color.parse(this._settings.get_string('color'));
+      color.parse(settings.get_string('color'));
       button.set_rgba(color);
 
       button.connect('notify::rgba', () => {
-         this._settings.set_string('color', button.get_rgba().to_string());
+         settings.set_string('color', button.get_rgba().to_string());
       });
 
       window.add(page);
