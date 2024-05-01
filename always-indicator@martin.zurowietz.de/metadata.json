@@ -9,7 +9,6 @@
   "url": "https://github.com/mzur/gnome-shell-always-indicator",
   "uuid": "always-indicator@martin.zurowietz.de",
   "settings-schema": "org.gnome.shell.extensions.always-indicator-settings",
-  "version": 16,
   "donations": {
     "paypal": "drmzur",
     "github": "mzur"
