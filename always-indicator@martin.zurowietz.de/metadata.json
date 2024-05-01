@@ -3,7 +3,8 @@
   "gettext-domain": "always-indicator",
   "name": "Always Indicator",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/mzur/gnome-shell-always-indicator",
   "uuid": "always-indicator@martin.zurowietz.de",
