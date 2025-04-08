@@ -5,7 +5,8 @@
   "shell-version": [
     "45",
     "46",
-    "47"
+    "47",
+    "48"
   ],
   "url": "https://github.com/mzur/gnome-shell-always-indicator",
   "uuid": "always-indicator@martin.zurowietz.de",
